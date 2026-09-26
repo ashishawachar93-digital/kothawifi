@@ -36,22 +36,15 @@ footer{margin-top:20px;background:var(--dark);color:#dce8f3;text-align:center;pa
 @media(max-width:850px){.plans{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.container{width:94%}.nav{min-height:62px}.brand img{width:44px;height:44px}.brand strong{font-size:14px}.brand span{font-size:9px}.nav a{font-size:12px}.banner{border-radius:12px}.plans{gap:9px}.card{padding:13px;border-radius:14px}.price{font-size:25px}.card h3{font-size:15px;min-height:34px}.data{font-size:14px}.grid{gap:5px}.grid div{padding:6px}.grid b{font-size:10px}.card button{font-size:12px;padding:10px}.badge{font-size:7px;right:7px;top:7px}}
 @media(max-width:350px){.plans{grid-template-columns:1fr}}
-
-/* Premium lightweight motion */
 .hero,.welcome,.heading{animation:fadeUp .55s ease both}
-.card{transition:transform .22s ease,box-shadow .22s ease}
-.card:hover{transform:translateY(-5px);box-shadow:0 14px 32px #10243d18}
-.card button{transition:transform .18s ease,filter .18s ease}
-.card button:hover{transform:translateY(-2px);filter:brightness(1.06)}
-.brand img{transition:transform .35s ease}
-.brand:hover img{transform:rotate(-4deg) scale(1.04)}
+.card{transition:transform .22s ease,box-shadow .22s ease}.card:hover{transform:translateY(-5px);box-shadow:0 14px 32px #10243d18}
+.card button{transition:transform .18s ease,filter .18s ease}.card button:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.brand img{transition:transform .35s ease}.brand:hover img{transform:rotate(-4deg) scale(1.04)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .wifi-pulse{display:inline-block;width:9px;height:9px;border-radius:50%;background:#07953b;box-shadow:0 0 0 0 #07953b55;animation:pulse 2s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 9px #07953b00}100%{box-shadow:0 0 0 0 #07953b00}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-
 </style>
-
 <meta name="description" content="Digital Grampanchayat WiFi in Kotha — affordable daily, premium, monthly, family and home WiFi plans for local users.">
 <meta name="keywords" content="Kotha WiFi, Kotha Internet, Kotha WiFi service, Kotha Internet service, Digital Grampanchayat WiFi, Kotha WiFi plans">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -63,165 +56,82 @@ footer{margin-top:20px;background:var(--dark);color:#dce8f3;text-align:center;pa
 <meta property="og:url" content="https://kothawifi.in/">
 <meta property="og:image" content="https://kothawifi.in/kotha-banner.webp">
 <script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"Organization",
-  "name":"Digital Grampanchayat WiFi",
-  "url":"https://kothawifi.in/",
-  "logo":"https://kothawifi.in/logo.webp",
-  "description":"Local WiFi and internet connectivity service for Kotha.",
-  "areaServed":{"@type":"Place","name":"Kotha, India"},
-  "founder":{"@type":"Person","name":"Ashish Awachar"}
-}
+{"@context":"https://schema.org","@type":"Organization","name":"Digital Grampanchayat WiFi","url":"https://kothawifi.in/","logo":"https://kothawifi.in/logo.webp","description":"Local WiFi and internet connectivity service for Kotha.","areaServed":{"@type":"Place","name":"Kotha, India"},"founder":{"@type":"Person","name":"Ashish Awachar"}}
 </script>
 <script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"WebSite",
-  "name":"Digital Grampanchayat WiFi",
-  "url":"https://kothawifi.in/"
-}
+{"@context":"https://schema.org","@type":"WebSite","name":"Digital Grampanchayat WiFi","url":"https://kothawifi.in/"}
 </script>
-
 </head>
 <body>
 <header><div class="container nav">
-<a class="brand" href="#top">
-<img loading="eager" decoding="async" alt="Digital Grampanchayat WiFi logo" src="logo.webp" alt="Digital Grampanchayat WiFi">
-<div><strong>Digital Grampanchayat WiFi</strong><span>Connecting Villages • Empowering People</span></div>
-</a>
+<a class="brand" href="#top"><img loading="eager" decoding="async" alt="Digital Grampanchayat WiFi logo" src="logo.webp"><div><strong>Digital Grampanchayat WiFi</strong><span>Connecting Villages • Empowering People</span></div></a>
 <a href="#plans">WiFi Packs ↓</a>
 </div></header>
-
 <main id="top">
 <section class="hero container">
 <img class="banner" src="kotha-banner.webp" alt="डिजिटल ग्रामपंचायत WiFi">
-<div class="welcome">
-<h1>बापू नगरी मध्ये आपले स्वागत आहे</h1>
-<p>आपल्या गावासाठी सोपी, परवडणारी आणि उपयोगी WiFi सेवा.</p>
-</div>
+<div class="welcome"><h1>बापू नगरी मध्ये आपले स्वागत आहे</h1><p>आपल्या गावासाठी सोपी, परवडणारी आणि उपयोगी WiFi सेवा.</p></div>
 </section>
 
 <section class="container" id="plans">
 <div class="heading"><h2>📶 WiFi Packs</h2><p>आपल्या गरजेनुसार योग्य Pack निवडा</p></div>
 <div class="plans">
-    <article class="card ">
-      
-      <div class="price">₹1</div>
-      <h3>Welcome Trial</h3>
-      <div class="data">100 MB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>1 Day</b></div>
-        <div><small>Time Limit</small><b>1 Hour</b></div>
-        <div><small>Speed</small><b>Public-1Mbps</b></div>
-        <div><small>Users</small><b>1 User</b></div>
-      </div>
-      <button onclick="openPayment('₹1','Welcome Trial')">BUY PACK</button>
-    </article>
-    <article class="card featured">
-      <span class="badge">TOP SELLER ⭐</span>
-      <div class="price">₹5</div>
-      <h3>1GB - 24Hrs</h3>
-      <div class="data">1 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>24 Hrs</b></div>
-        <div><small>Time Limit</small><b>24 Hrs</b></div>
-        <div><small>Speed</small><b>Public-1Mbps</b></div>
-        <div><small>Users</small><b>1 User</b></div>
-      </div>
-      <button onclick="openPayment('₹5','1GB - 24Hrs')">BUY PACK</button>
-    </article>
-    <article class="card ">
-      
-      <div class="price">₹10</div>
-      <h3>3GB - 24Hr</h3>
-      <div class="data">3 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>24 Hrs</b></div>
-        <div><small>Time Limit</small><b>24 Hrs</b></div>
-        <div><small>Speed</small><b>Public-1Mbps</b></div>
-        <div><small>Users</small><b>1 User</b></div>
-      </div>
-      <button onclick="openPayment('₹10','3GB - 24Hr')">BUY PACK</button>
-    </article>
-    <article class="card ">
-      
-      <div class="price">₹20</div>
-      <h3>7GB - 2Day</h3>
-      <div class="data">7 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>2 Days</b></div>
-        <div><small>Time Limit</small><b>48 Hrs</b></div>
-        <div><small>Speed</small><b>Public-1Mbps</b></div>
-        <div><small>Users</small><b>1 User</b></div>
-      </div>
-      <button onclick="openPayment('₹20','7GB - 2Day')">BUY PACK</button>
-    </article>
-    <article class="card featured">
-      <span class="badge">TOP SELLER ⭐</span>
-      <div class="price">₹25</div>
-      <h3>10GB Premium</h3>
-      <div class="data">10 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>24 Hrs</b></div>
-        <div><small>Time Limit</small><b>24 Hrs</b></div>
-        <div><small>Speed</small><b>Premium-5Mbps</b></div>
-        <div><small>Users</small><b>1 User</b></div>
-      </div>
-      <button onclick="openPayment('₹25','10GB Premium')">BUY PACK</button>
-    </article>
-    <article class="card ">
-      
-      <div class="price">₹65</div>
-      <h3>10GB Monthly</h3>
-      <div class="data">10 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>30 Days</b></div>
-        <div><small>Time Limit</small><b>720 Hrs</b></div>
-        <div><small>Speed</small><b>Public-1Mbps</b></div>
-        <div><small>Users</small><b>1 User</b></div>
-      </div>
-      <button onclick="openPayment('₹65','10GB Monthly')">BUY PACK</button>
-    </article>
-    <article class="card featured">
-      <span class="badge">TOP SELLER ⭐</span>
-      <div class="price">₹100</div>
-      <h3>30GB Gaming</h3>
-      <div class="data">30 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>30 Days</b></div>
-        <div><small>Time Limit</small><b>720 Hrs</b></div>
-        <div><small>Speed</small><b>Premium-5Mbps</b></div>
-        <div><small>Users</small><b>1 User</b></div>
-      </div>
-      <button onclick="openPayment('₹100','30GB Gaming')">BUY PACK</button>
-    </article>
-    <article class="card featured">
-      <span class="badge">TOP SELLER ⭐</span>
-      <div class="price">₹199</div>
-      <h3>Family</h3>
-      <div class="data">50 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>30 Days</b></div>
-        <div><small>Time Limit</small><b>720 Hrs</b></div>
-        <div><small>Speed</small><b>Premium-5Mbps</b></div>
-        <div><small>Users</small><b>2 Users</b></div>
-      </div>
-      <button onclick="openPayment('₹199','Family')">BUY PACK</button>
-    </article>
-    <article class="card featured">
-      <span class="badge">TOP SELLER ⭐</span>
-      <div class="price">₹500</div>
-      <h3>500GB Home</h3>
-      <div class="data">500 GB</div>
-      <div class="grid">
-        <div><small>Validity</small><b>1 Month</b></div>
-        <div><small>Time Limit</small><b>720 Hrs</b></div>
-        <div><small>Speed</small><b>10-Mbps plan</b></div>
-        <div><small>Users</small><b>11 Users</b></div>
-      </div>
-      <button onclick="openPayment('₹500','500GB Home')">BUY PACK</button>
-    </article></div>
+
+<article class="card">
+<div class="price">₹1</div><h3>Welcome Trial</h3><div class="data">100 MB</div>
+<div class="grid"><div><small>Validity</small><b>1 Day</b></div><div><small>Time Limit</small><b>1 Hour</b></div><div><small>Speed</small><b>Public-1Mbps</b></div><div><small>Users</small><b>1 User</b></div></div>
+<button onclick="openPayment('₹1','Welcome Trial')">BUY PACK</button>
+</article>
+
+<article class="card featured">
+<span class="badge">TOP SELLER ⭐</span><div class="price">₹5</div><h3>1GB - 24Hrs</h3><div class="data">1 GB</div>
+<div class="grid"><div><small>Validity</small><b>24 Hrs</b></div><div><small>Time Limit</small><b>24 Hrs</b></div><div><small>Speed</small><b>Public-1Mbps</b></div><div><small>Users</small><b>1 User</b></div></div>
+<button onclick="openPayment('₹5','1GB - 24Hrs')">BUY PACK</button>
+</article>
+
+<article class="card">
+<div class="price">₹10</div><h3>3GB - 24Hr</h3><div class="data">3 GB</div>
+<div class="grid"><div><small>Validity</small><b>24 Hrs</b></div><div><small>Time Limit</small><b>24 Hrs</b></div><div><small>Speed</small><b>Public-1Mbps</b></div><div><small>Users</small><b>1 User</b></div></div>
+<button onclick="openPayment('₹10','3GB - 24Hr')">BUY PACK</button>
+</article>
+
+<article class="card">
+<div class="price">₹20</div><h3>7GB - 2Day</h3><div class="data">7 GB</div>
+<div class="grid"><div><small>Validity</small><b>2 Days</b></div><div><small>Time Limit</small><b>48 Hrs</b></div><div><small>Speed</small><b>Public-1Mbps</b></div><div><small>Users</small><b>1 User</b></div></div>
+<button onclick="openPayment('₹20','7GB - 2Day')">BUY PACK</button>
+</article>
+
+<article class="card featured">
+<span class="badge">TOP SELLER ⭐</span><div class="price">₹25</div><h3>10GB Premium</h3><div class="data">10 GB</div>
+<div class="grid"><div><small>Validity</small><b>24 Hrs</b></div><div><small>Time Limit</small><b>24 Hrs</b></div><div><small>Speed</small><b>Premium-5Mbps</b></div><div><small>Users</small><b>1 User</b></div></div>
+<button onclick="openPayment('₹25','10GB Premium')">BUY PACK</button>
+</article>
+
+<article class="card">
+<div class="price">₹65</div><h3>10GB Monthly</h3><div class="data">10 GB</div>
+<div class="grid"><div><small>Validity</small><b>30 Days</b></div><div><small>Time Limit</small><b>720 Hrs</b></div><div><small>Speed</small><b>Public-1Mbps</b></div><div><small>Users</small><b>1 User</b></div></div>
+<button onclick="openPayment('₹65','10GB Monthly')">BUY PACK</button>
+</article>
+
+<article class="card featured">
+<span class="badge">TOP SELLER ⭐</span><div class="price">₹100</div><h3>30GB Gaming</h3><div class="data">30 GB</div>
+<div class="grid"><div><small>Validity</small><b>30 Days</b></div><div><small>Time Limit</small><b>720 Hrs</b></div><div><small>Speed</small><b>Premium-5Mbps</b></div><div><small>Users</small><b>1 User</b></div></div>
+<button onclick="openPayment('₹100','30GB Gaming')">BUY PACK</button>
+</article>
+
+<article class="card featured">
+<span class="badge">TOP SELLER ⭐</span><div class="price">₹199</div><h3>Family</h3><div class="data">50 GB</div>
+<div class="grid"><div><small>Validity</small><b>30 Days</b></div><div><small>Time Limit</small><b>720 Hrs</b></div><div><small>Speed</small><b>Premium-5Mbps</b></div><div><small>Users</small><b>2 Users</b></div></div>
+<button onclick="openPayment('₹199','Family')">BUY PACK</button>
+</article>
+
+<article class="card featured">
+<span class="badge">TOP SELLER ⭐</span><div class="price">₹500</div><h3>500GB Home</h3><div class="data">500 GB</div>
+<div class="grid"><div><small>Validity</small><b>1 Month</b></div><div><small>Time Limit</small><b>720 Hrs</b></div><div><small>Speed</small><b>10-Mbps plan</b></div><div><small>Users</small><b>11 Users</b></div></div>
+<button onclick="openPayment('₹500','500GB Home')">BUY PACK</button>
+</article>
+
+</div>
 </section>
 
 <section class="container" id="about">
@@ -257,16 +167,16 @@ WiFi Packs मधून मिळणारे उत्पन्न मुख्
 <div class="modal" id="modal">
 <div class="box">
 <button class="close" onclick="closePayment()">×</button>
-<h3 id="planName">WiFi Pack</h3><div class="amount" id="amount">₹0</div>
-<div class="upi"><small>UPI ID</small><b>9922870034@upi</b></div>
-<button class="pay" id="payButton">Pay with UPI</button>
-<div class="note">Razorpay/backend verification अभी connected नहीं है. Payment successful होने का fake confirmation नहीं दिखाया जाएगा.</div>
+<h3 id="planName">WiFi Pack</h3>
+<div class="amount" id="amount">₹0</div>
+<div class="upi"><small>पेमेंट गेटवे</small><b>Cashfree Secure Checkout</b></div>
+<button class="pay" id="payButton">सुरक्षित पेमेंट करा</button>
+<div class="note">पेमेंट यशस्वी झाल्यानंतर सर्व्हरवर पडताळणी केली जाईल. पडताळणी पूर्ण झाल्यावरच व्हाउचर दिले जाईल.</div>
 </div>
 </div>
 
 <script>
-const KOTHAWIFI_API =
-  "https://kothawifi-cashfree-production.vercel.app";
+const KOTHAWIFI_API = "https://kothawifi-cashfree-production.vercel.app";
 
 const PLAN_IDS = {
   "1GB - 24Hrs": 1,
@@ -282,11 +192,7 @@ const PLAN_IDS = {
 
 function loadCashfreeSDK() {
   return new Promise((resolve, reject) => {
-    if (window.Cashfree) {
-      resolve();
-      return;
-    }
-
+    if (window.Cashfree) return resolve();
     const script = document.createElement("script");
     script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
     script.onload = resolve;
@@ -296,37 +202,28 @@ function loadCashfreeSDK() {
 }
 
 function openPayment(price, plan) {
-
   document.getElementById("planName").textContent = plan;
   document.getElementById("amount").textContent = price;
 
-  document.querySelector(".upi").innerHTML =
-    "<small>Payment Gateway</small><b>Secure Cashfree Checkout</b>";
-
-  document.querySelector(".note").textContent =
-    "Payment successful होने के बाद server-side verification के बाद ही voucher जारी किया जाएगा.";
-
   const payButton = document.getElementById("payButton");
-
-  payButton.textContent = "Pay Securely with Cashfree";
+  payButton.disabled = false;
+  payButton.textContent = "सुरक्षित पेमेंट करा";
 
   payButton.onclick = async function () {
-
-    const phone = prompt("अपना 10-digit mobile number डालें:");
+    const phone = prompt("कृपया तुमचा 10 अंकी मोबाईल नंबर टाका:");
 
     if (!phone || !/^[6-9]\d{9}$/.test(phone.trim())) {
-      alert("कृपया सही 10-digit mobile number डालें.");
+      alert("कृपया योग्य 10 अंकी मोबाईल नंबर टाका.");
       return;
     }
 
     const customerName =
-      prompt("अपना नाम डालें:") || "WiFi Customer";
+      prompt("कृपया तुमचे नाव टाका:") || "WiFi ग्राहक";
 
     payButton.disabled = true;
-    payButton.textContent = "Opening Payment...";
+    payButton.textContent = "पेमेंट उघडत आहे...";
 
     try {
-
       const response = await fetch(
         KOTHAWIFI_API + "/api/create-order",
         {
@@ -335,9 +232,9 @@ function openPayment(price, plan) {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            planId: PLAN_IDS[plan],
-            customerName: customerName.trim(),
-            customerPhone: phone.trim()
+            plan_id: PLAN_IDS[plan],
+            customer_name: customerName.trim(),
+            customer_phone: phone.trim()
           })
         }
       );
@@ -346,7 +243,7 @@ function openPayment(price, plan) {
 
       if (!response.ok || !data.payment_session_id) {
         throw new Error(
-          data.error || "Payment order create नहीं हुआ."
+          data.error || "पेमेंट ऑर्डर तयार होऊ शकली नाही."
         );
       }
 
@@ -362,16 +259,14 @@ function openPayment(price, plan) {
       });
 
     } catch (error) {
-
       console.error(error);
-
       alert(
-        "Payment शुरू नहीं हो पाया.\n\n" +
-        (error.message || "Please try again.")
+        "पेमेंट सुरू करता आले नाही.\n\n" +
+        (error.message || "कृपया पुन्हा प्रयत्न करा.")
       );
 
       payButton.disabled = false;
-      payButton.textContent = "Pay Securely with Cashfree";
+      payButton.textContent = "सुरक्षित पेमेंट करा";
     }
   };
 
