@@ -265,16 +265,122 @@ WiFi Packs मधून मिळणारे उत्पन्न मुख्
 </div>
 
 <script>
-function openPayment(price,plan){
-document.getElementById('planName').textContent=plan;
-document.getElementById('amount').textContent=price;
-const n=Number(price.replace('₹','').replace(',',''));
-document.getElementById('payButton').onclick=function(){
-location.href='upi://pay?pa=9922870034@upi&pn=Digital%20Grampanchayat%20WiFi&am='+n+'&cu=INR&tn='+encodeURIComponent(plan);
+const KOTHAWIFI_API =
+  "https://kothawifi-cashfree-production.vercel.app";
+
+const PLAN_IDS = {
+  "1GB - 24Hrs": 1,
+  "3GB - 24Hr": 2,
+  "7GB - 2Day": 3,
+  "10GB Premium": 4,
+  "10GB Monthly": 5,
+  "30GB Gaming": 6,
+  "Family": 7,
+  "500GB Home": 8,
+  "Welcome Trial": 9
 };
-document.getElementById('modal').classList.add('show');
+
+function loadCashfreeSDK() {
+  return new Promise((resolve, reject) => {
+    if (window.Cashfree) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
 }
-function closePayment(){document.getElementById('modal').classList.remove('show')}
+
+function openPayment(price, plan) {
+
+  document.getElementById("planName").textContent = plan;
+  document.getElementById("amount").textContent = price;
+
+  document.querySelector(".upi").innerHTML =
+    "<small>Payment Gateway</small><b>Secure Cashfree Checkout</b>";
+
+  document.querySelector(".note").textContent =
+    "Payment successful होने के बाद server-side verification के बाद ही voucher जारी किया जाएगा.";
+
+  const payButton = document.getElementById("payButton");
+
+  payButton.textContent = "Pay Securely with Cashfree";
+
+  payButton.onclick = async function () {
+
+    const phone = prompt("अपना 10-digit mobile number डालें:");
+
+    if (!phone || !/^[6-9]\d{9}$/.test(phone.trim())) {
+      alert("कृपया सही 10-digit mobile number डालें.");
+      return;
+    }
+
+    const customerName =
+      prompt("अपना नाम डालें:") || "WiFi Customer";
+
+    payButton.disabled = true;
+    payButton.textContent = "Opening Payment...";
+
+    try {
+
+      const response = await fetch(
+        KOTHAWIFI_API + "/api/create-order",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            planId: PLAN_IDS[plan],
+            customerName: customerName.trim(),
+            customerPhone: phone.trim()
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.payment_session_id) {
+        throw new Error(
+          data.error || "Payment order create नहीं हुआ."
+        );
+      }
+
+      await loadCashfreeSDK();
+
+      const cashfree = Cashfree({
+        mode: "production"
+      });
+
+      await cashfree.checkout({
+        paymentSessionId: data.payment_session_id,
+        redirectTarget: "_self"
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Payment शुरू नहीं हो पाया.\n\n" +
+        (error.message || "Please try again.")
+      );
+
+      payButton.disabled = false;
+      payButton.textContent = "Pay Securely with Cashfree";
+    }
+  };
+
+  document.getElementById("modal").classList.add("show");
+}
+
+function closePayment() {
+  document.getElementById("modal").classList.remove("show");
+}
 </script>
 </body>
 </html>
