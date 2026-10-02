@@ -1,0 +1,6 @@
+import { NextRequest,NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { db } from "@/lib/db";
+import { ensureInitialAdmin } from "@/lib/bootstrap";
+import { setSession } from "@/lib/auth";
+export async function POST(req:NextRequest){try{await ensureInitialAdmin();const {email,password}=await req.json();const normalized=String(email??'').trim().toLowerCase();await db.query("DELETE FROM admin_login_failures WHERE attempted_at<now()-interval '1 day'");const recent=await db.query("SELECT count(*)::int n FROM admin_login_failures WHERE email=$1 AND attempted_at>now()-interval '15 minutes'",[normalized]);if(recent.rows[0].n>=10)return NextResponse.json({error:'Too many attempts. Wait 15 minutes and try again.'},{status:429});const r=await db.query('SELECT id,password_hash FROM admins WHERE email=$1',[normalized]);if(!r.rowCount||!await bcrypt.compare(String(password??''),r.rows[0].password_hash)){await db.query('INSERT INTO admin_login_failures(email) VALUES($1)',[normalized]);return NextResponse.json({error:'Email or password is incorrect'},{status:401});}await db.query('DELETE FROM admin_login_failures WHERE email=$1',[normalized]);await setSession(r.rows[0].id);return NextResponse.json({ok:true});}catch(e){console.error(e);return NextResponse.json({error:'Login setup failed. Check server configuration.'},{status:500});}}

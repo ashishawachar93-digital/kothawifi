@@ -1,0 +1,4 @@
+import { NextRequest,NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/http";
+export async function POST(req:NextRequest){const a=await requireAdmin();if(a.response)return a.response;try{const x=await req.json();const cost=Math.round(Number(x.costRupees)*100),gb=Number(x.totalGb);if(!x.periodStart||!x.periodEnd||!Number.isFinite(cost)||cost<0||!Number.isFinite(gb)||gb<0) return NextResponse.json({error:'Enter valid period, bill amount and bill GB'},{status:400});const r=await db.query('INSERT INTO jio_costs(period_start,period_end,cost_paise,total_gb,note) VALUES($1,$2,$3,$4,$5) RETURNING *',[x.periodStart,x.periodEnd,cost,gb,x.note||null]);return NextResponse.json({cost:r.rows[0]});}catch(e){console.error(e);return NextResponse.json({error:'Could not save Jio bill'},{status:400});}}
