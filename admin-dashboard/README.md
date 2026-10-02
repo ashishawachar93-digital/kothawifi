@@ -77,4 +77,3 @@ Cashfree success received when stock is empty is recorded as `SUCCESS_NO_STOCK`;
 ## Operational security
 
 Use HTTPS, a private Postgres network, backups, restricted database credentials and a strong unique session secret. Voucher passwords are encrypted in the application before storage, while usernames and one-field codes remain searchable text. Do not log customer secrets. Rotate `SESSION_SECRET` only with a planned credential re-encryption/migration because old encrypted values cannot be decrypted with a new key.
-
