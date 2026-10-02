@@ -36,7 +36,9 @@ Open `http://localhost:3000` for admin and `http://localhost:3000/buy` for the c
 
 ## Vercel / GitHub deployment
 
-Push this project to a private GitHub repository, import it into Vercel, attach a managed PostgreSQL database, and set the variables in `.env.example` in Vercel's environment settings. Run `npm run db:migrate` against the production database once before enabling traffic. Set `APP_URL` to the deployed HTTPS origin. Add the exact deployed webhook URL in Cashfree and copy that endpoint's webhook signing secret into `CASHFREE_WEBHOOK_SECRET`. Keep all API/database/session secrets server-side; never use a `NEXT_PUBLIC_` prefix for them.
+This dashboard source is in the `admin-dashboard/` subfolder of the existing public `ashishawachar93-digital/kothawifi` repository. The existing static website files at the repository root were left unchanged. To deploy the dashboard separately, import that repository into Vercel and set the Vercel project's **Root Directory** to `admin-dashboard`. This keeps the current website's deployment independent; assign the dashboard a separate URL or subdomain.
+
+Attach a managed PostgreSQL database and set the variables in `.env.example` in Vercel's environment settings. Run `npm run db:migrate` against the production database once before enabling traffic. Set `APP_URL` to the deployed HTTPS origin. Add the exact deployed webhook URL in Cashfree and copy that endpoint's webhook signing secret into `CASHFREE_WEBHOOK_SECRET`. Keep all API/database/session secrets server-side; never use a `NEXT_PUBLIC_` prefix for them.
 
 ## Voucher and accounting formats
 
@@ -48,7 +50,7 @@ guest001,p@ss-001,
 guest002,p@ss-002,
 ```
 
-Voucher TXT format: one username/code per line; passwords are blank. Pick the plan that matches the imported stock. A row is considered unique by `(plan_id, username)`.
+Voucher TXT format: one username/code per line; passwords are blank. Pick the plan that matches the imported stock. Usernames are globally unique in the database to prevent the same network account from being sold under multiple plans.
 
 Accounting CSV headers:
 
@@ -75,3 +77,4 @@ Cashfree success received when stock is empty is recorded as `SUCCESS_NO_STOCK`;
 ## Operational security
 
 Use HTTPS, a private Postgres network, backups, restricted database credentials and a strong unique session secret. Voucher passwords are encrypted in the application before storage, while usernames and one-field codes remain searchable text. Do not log customer secrets. Rotate `SESSION_SECRET` only with a planned credential re-encryption/migration because old encrypted values cannot be decrypted with a new key.
+
