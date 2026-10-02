@@ -16,6 +16,7 @@ type Plan = {
   name: string;
   price_paise: number;
   validity_hours: number | null;
+  time_limit_hours: number | null;
   quota_mb: number | null;
   simultaneous_users: number;
   stock: number;
@@ -48,6 +49,7 @@ export default function BuyPage() {
   const [status, setStatus] = useState<CheckoutStatus | null>(null);
   const [plansLoading, setPlansLoading] = useState(true);
   const [plansError, setPlansError] = useState("");
+  const [requestedPlanMessage, setRequestedPlanMessage] = useState("");
   const [statusError, setStatusError] = useState("");
   const [checkoutError, setCheckoutError] = useState("");
   const [pdfMessage, setPdfMessage] = useState("");
@@ -62,7 +64,40 @@ export default function BuyPage() {
         const response = await fetch("/api/public/plans", { cache: "no-store" });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || "Plans are temporarily unavailable.");
-        if (!cancelled) setPlans(Array.isArray(result.plans) ? result.plans : []);
+        if (!cancelled) {
+          const availablePlans: Plan[] = Array.isArray(result.plans) ? result.plans : [];
+          setPlans(availablePlans);
+
+          const params = new URLSearchParams(window.location.search);
+          const requestedPricePaise = Number(params.get("pricePaise"));
+          const requestedPlanName = params
+            .get("plan")
+            ?.toLowerCase()
+            .replace(/[^a-z0-9]/g, "")
+            .replace(/s$/, "");
+          if (Number.isSafeInteger(requestedPricePaise) && requestedPricePaise > 0) {
+            const matches = availablePlans.filter((plan) => {
+              if (plan.price_paise !== requestedPricePaise) return false;
+              if (!requestedPlanName) return true;
+              const catalogName = plan.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+              return catalogName.includes(requestedPlanName);
+            });
+            if (matches.length === 1 && matches[0].stock > 0) {
+              setSelectedPlan(matches[0]);
+            } else {
+              const amount = (requestedPricePaise / 100).toLocaleString("en-IN", {
+                maximumFractionDigits: 2,
+              });
+              setRequestedPlanMessage(
+                matches.length === 0
+                  ? `The ₹${amount} pack is not configured in the voucher inventory, so it cannot be purchased online yet.`
+                  : matches.length > 1
+                    ? `The ₹${amount} pack is configured more than once. Please contact the WiFi operator before paying.`
+                    : `The ₹${amount} pack is sold out right now. Please choose another pack.`,
+              );
+            }
+          }
+        }
       } catch (error) {
         if (!cancelled) {
           setPlansError(error instanceof Error ? error.message : "Plans are temporarily unavailable.");
@@ -105,14 +140,14 @@ export default function BuyPage() {
         setStatus(nextStatus);
         setStatusError("");
 
-        if (nextStatus.status === "PENDING" && attempts < 15) {
+        if (nextStatus.status === "PENDING" && attempts < 30) {
           attempts += 1;
           timer = window.setTimeout(() => void checkStatus(), 4000);
         }
       } catch (error) {
         if (stopped) return;
         setStatusError(error instanceof Error ? error.message : "Could not check payment status.");
-        if (attempts < 15) {
+        if (attempts < 30) {
           attempts += 1;
           timer = window.setTimeout(() => void checkStatus(), 4000);
         }
@@ -154,6 +189,7 @@ export default function BuyPage() {
         body: JSON.stringify({ planId: selectedPlan.id, phone }),
       });
       const result = await response.json();
+      if (result.orderId) setOrderId(result.orderId);
       if (!response.ok) throw new Error(result.error || "Checkout failed.");
 
       setOrderId(result.orderId);
@@ -224,7 +260,7 @@ export default function BuyPage() {
               <small>QUICK CONNECT</small>
             </span>
           </div>
-          <a href="/">Admin sign in ↗</a>
+          <a href="https://kothawifi.in/">Back to Kotha WiFi ↗</a>
         </div>
 
         <div className="buy-title">
@@ -273,6 +309,13 @@ export default function BuyPage() {
           </div>
         )}
 
+        {status?.status === "FAILED" && (
+          <div className="notice" role="status">
+            Cashfree reports that this payment did not complete. If money was deducted, wait a moment
+            and check again before making another payment. <button className="quiet" onClick={refreshPayment}>Check again</button>
+          </div>
+        )}
+
         {status?.status === "PENDING" && orderId && (
           <div className="notice" role="status">
             Payment is being confirmed. Order: {orderId}. We will check automatically for about a
@@ -284,6 +327,7 @@ export default function BuyPage() {
 
         {plansLoading && <p className="muted" role="status">Loading plans…</p>}
         {plansError && <p className="notice" role="alert">{plansError}</p>}
+        {requestedPlanMessage && <p className="notice" role="status">{requestedPlanMessage}</p>}
         {!plansLoading && !plansError && plans.length === 0 && (
           <p className="muted">There are no active plans available right now.</p>
         )}
@@ -300,6 +344,7 @@ export default function BuyPage() {
                 {plan.validity_hours ? plan.validity_hours + " hours" : ""}
                 {plan.validity_hours && plan.quota_mb ? " · " : ""}
                 {plan.quota_mb ? plan.quota_mb + " MB data" : ""}
+                {plan.time_limit_hours ? " · " + plan.time_limit_hours + " hour time limit" : ""}
                 {plan.simultaneous_users > 1 ? " · " + plan.simultaneous_users + " devices" : ""}
               </p>
               <button

@@ -4,3 +4,4 @@
 .pending-button{margin-top:14px}
 @media(max-width:1050px){.metrics{grid-template-columns:repeat(2,1fr)}.main{padding:30px 25px}.two{grid-template-columns:1fr}}
 @media(max-width:700px){.sidebar{width:64px;padding:15px 8px}.brand{padding:0 4px 25px}.brand>span:not(.brandmark),.sidebar nav button:not(.active)::after{display:none}.sidebar nav button{font-size:0;justify-content:center;padding:12px 4px}.sidebar nav button i{font-size:20px}.sidebottom{font-size:0;padding:12px 7px}.signout{font-size:0}.main{margin-left:64px;width:calc(100% - 64px);padding:24px 15px}header{align-items:start}.date-pill{display:none}.metrics{gap:9px}.metric{padding:14px}.metric strong{font-size:20px}.metric-top{font-size:10px}.metric small{font-size:9px}.formgrid{grid-template-columns:1fr 1fr}.two>.card{padding:16px}.buy-title h1{font-size:28px}}
+ .offline-dot{display:inline-block;background:#c94b43;width:7px;height:7px;border-radius:9px;margin-right:7px}

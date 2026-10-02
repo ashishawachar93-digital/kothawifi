@@ -9,7 +9,8 @@ Google-Sheet-free operations dashboard for voucher stock, Cashfree payments, pla
 - PostgreSQL schema for plans, voucher stock, payment intents/payments, accounting sessions and Jio bills.
 - Voucher import from one-code-per-line TXT or CSV (`username,password,code`). Password values are encrypted with AES-256-GCM using a key derived from `SESSION_SECRET`.
 - Public `/buy` plan page and Cashfree hosted-checkout order creation. After a successful payment, the page checks for the allocated voucher, displays it and automatically downloads a PDF with a manual download fallback.
-- Cashfree webhook HMAC verification using the raw request, payment amount/order matching, transaction locking, unique constraints and retry-safe allocation.
+- Cashfree webhook HMAC verification using the raw request, payment amount/order matching, transaction locking, unique constraints and retry-safe allocation. The buyer return page also checks Cashfree's order payments server-to-server and fulfills a verified success if the webhook is delayed or missed.
+- Recovery for the legacy uppercase `KW_...` return URL: it verifies the order directly with Cashfree, requires the order's stored return URL to point back to Kotha WiFi, and only links it to exactly one active plan with the same amount.
 - Manual fulfillment of paid orders that arrived while their plan had no unused stock.
 - RADIUS/MikroTik accounting CSV import and a dashboard that converts byte counters into decimal GB.
 - Jio bill input and an estimated usage-based Jio cost allocation. Access cost per sale is entered on each plan.
@@ -21,8 +22,8 @@ Requires Node.js 20.9 or later and a PostgreSQL database. Create a blank databas
 
 - `DATABASE_URL`
 - `SESSION_SECRET` with at least 32 random characters. Changing it invalidates sessions and makes previously encrypted voucher passwords unreadable.
-- `ADMIN_EMAIL` and `ADMIN_PASSWORD` (at least 12 characters). The first login creates this admin. Changing these variables later does not rotate the stored password; update the `admins` row through a secure database procedure.
-- Cashfree API credentials and the webhook secret before enabling checkout.
+- `ADMIN_EMAIL` and `ADMIN_PASSWORD` (at least 10 characters). The first login creates this admin. Changing these variables later does not rotate the stored password; update the `admins` row through a secure database procedure.
+- `CASHFREE_APP_ID`, `CASHFREE_SECRET_KEY`, `CASHFREE_WEBHOOK_SECRET`, and an explicit `CASHFREE_ENV` (`sandbox` or `production`) before enabling checkout.
 
 Then run:
 
@@ -32,13 +33,15 @@ npm run db:migrate
 npm run dev
 ```
 
+`db:migrate` also inserts the eight known paid/trial plans from the existing catalogue if no active plan at each price already exists. The ₹5 1GB pack shown on the legacy homepage is intentionally not seeded because there is no matching stock in the supplied voucher workbook. Do not enable that pack until its exact voucher inventory is available.
+
 Open `http://localhost:3000` for admin and `http://localhost:3000/buy` for the customer plan page. Configure the Cashfree webhook URL as `https://YOUR_DOMAIN/api/payments/webhook` and subscribe to `PAYMENT_SUCCESS_WEBHOOK`. Start in Cashfree sandbox mode. The checkout API uses Cashfree API version `2025-01-01` by default; set `CASHFREE_API_VERSION` if your account's configured version differs.
 
 ## Vercel / GitHub deployment
 
-This dashboard source is in the `admin-dashboard/` subfolder of the existing public `ashishawachar93-digital/kothawifi` repository. The existing static website files at the repository root were left unchanged. To deploy the dashboard separately, import that repository into Vercel and set the Vercel project's **Root Directory** to `admin-dashboard`. This keeps the current website's deployment independent; assign the dashboard a separate URL or subdomain.
+This dashboard source is in the `admin-dashboard/` subfolder of the existing public `ashishawachar93-digital/kothawifi` repository. The static homepage is at the repository root. The homepage's purchase buttons send customers to the dashboard's `/buy` page, which creates orders, verifies payment through Cashfree's webhook, allocates one imported voucher, and downloads the voucher PDF. To deploy the dashboard separately, import that repository into Vercel and set the Vercel project's **Root Directory** to `admin-dashboard`. The homepage and checkout therefore use separate hosts until a custom domain is assigned to the dashboard.
 
-Attach a managed PostgreSQL database and set the variables in `.env.example` in Vercel's environment settings. Run `npm run db:migrate` against the production database once before enabling traffic. Set `APP_URL` to the deployed HTTPS origin. Add the exact deployed webhook URL in Cashfree and copy that endpoint's webhook signing secret into `CASHFREE_WEBHOOK_SECRET`. Keep all API/database/session secrets server-side; never use a `NEXT_PUBLIC_` prefix for them.
+Attach a managed PostgreSQL database and set the variables in `.env.example` in the `kotha-wifi-admin` Vercel project's Production environment. Run `npm run db:migrate` against the production database once; this creates the schema and seeds the known plans. Import the private workbook voucher CSVs through the admin page after migration. Do not add voucher CSVs or database/payment secrets to GitHub. Set `APP_URL` to the deployed HTTPS origin. Add the exact deployed webhook URL in Cashfree and copy that endpoint's webhook signing secret into `CASHFREE_WEBHOOK_SECRET`. Keep all API/database/session secrets server-side; never use a `NEXT_PUBLIC_` prefix for them.
 
 ## Voucher and accounting formats
 
@@ -72,7 +75,7 @@ Do not switch live traffic until the exact FreeIsp version/API or supported expo
 
 The dashboard's monthly estimated profit is collected successful sales minus the plan cost recorded for allocated vouchers minus Jio bill cost allocated in proportion to imported GB versus the bill's entered total GB (capped at 100%). It is not an audited profit figure. It excludes any costs not entered in the system, and requires a correct, complete accounting export and matching bill period. For overlapping Jio bill entries, the current view sums matching bill records, so avoid entering duplicate periods.
 
-Cashfree success received when stock is empty is recorded as `SUCCESS_NO_STOCK`; import the matching plan stock and use **Allocate newly imported stock to paid orders**. Refunds, payment reversals, SMS/email voucher delivery, automatic reconciliation and live stock disablement in FreeIsp are not implemented.
+Cashfree success received when stock is empty is recorded as `SUCCESS_NO_STOCK`; import the matching plan stock and use **Allocate newly imported stock to paid orders**. Refunds, payment reversals, SMS/email voucher delivery, background reconciliation for buyers who never return to the site, and live stock disablement in FreeIsp are not implemented.
 
 ## Operational security
 
