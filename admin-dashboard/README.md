@@ -43,6 +43,15 @@ This dashboard source is in the `admin-dashboard/` subfolder of the existing pub
 
 Attach a managed PostgreSQL database and set the variables in `.env.example` in the `kotha-wifi-admin` Vercel project's Production environment. Run `npm run db:migrate` against the production database once; this creates the schema and seeds the known plans. Import the private workbook voucher CSVs through the admin page after migration. Do not add voucher CSVs or database/payment secrets to GitHub. Set `APP_URL` to the deployed HTTPS origin. Add the exact deployed webhook URL in Cashfree and copy that endpoint's webhook signing secret into `CASHFREE_WEBHOOK_SECRET`. Keep all API/database/session secrets server-side; never use a `NEXT_PUBLIC_` prefix for them.
 
+For a one-time migration from a linked checkout, pull the production variables into the ignored local file and run the migration from this folder:
+
+```sh
+vercel env pull .env.local --environment=production
+npm run db:migrate
+```
+
+Do not commit `.env.local`. The migration script reads that file directly so the database URL does not have to be copied into a shell command.
+
 ## Voucher and accounting formats
 
 Voucher CSV example:
