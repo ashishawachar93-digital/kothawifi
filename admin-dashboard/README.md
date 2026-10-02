@@ -8,7 +8,7 @@ Google-Sheet-free operations dashboard for voucher stock, Cashfree payments, pla
 - Database-backed throttling for repeated failed admin sign-ins and excessive checkout creation for one phone number.
 - PostgreSQL schema for plans, voucher stock, payment intents/payments, accounting sessions and Jio bills.
 - Voucher import from one-code-per-line TXT or CSV (`username,password,code`). Password values are encrypted with AES-256-GCM using a key derived from `SESSION_SECRET`.
-- Public `/buy` plan page and Cashfree hosted-checkout order creation.
+- Public `/buy` plan page and Cashfree hosted-checkout order creation. After a successful payment, the page checks for the allocated voucher, displays it and automatically downloads a PDF with a manual download fallback.
 - Cashfree webhook HMAC verification using the raw request, payment amount/order matching, transaction locking, unique constraints and retry-safe allocation.
 - Manual fulfillment of paid orders that arrived while their plan had no unused stock.
 - RADIUS/MikroTik accounting CSV import and a dashboard that converts byte counters into decimal GB.
@@ -77,3 +77,4 @@ Cashfree success received when stock is empty is recorded as `SUCCESS_NO_STOCK`;
 ## Operational security
 
 Use HTTPS, a private Postgres network, backups, restricted database credentials and a strong unique session secret. Voucher passwords are encrypted in the application before storage, while usernames and one-field codes remain searchable text. Do not log customer secrets. Rotate `SESSION_SECRET` only with a planned credential re-encryption/migration because old encrypted values cannot be decrypted with a new key.
+
